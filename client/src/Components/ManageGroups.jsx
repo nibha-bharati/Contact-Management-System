@@ -4,6 +4,7 @@ import { useState } from "react";
 import CreateGroupForm from "./CreateGroupForm";
 import UpdateGroupModal from "./UpdateGroupModal";
 import DeleteGroupModal from "./DeleteGroupModal";
+import Header from "./Header";
 
 export default function ManageGroups() {
   const [groups, setGroups] = useState([]);
@@ -24,7 +25,7 @@ export default function ManageGroups() {
         console.log(result);
         setGroups(result.data);
 
-        const permissionIds = result.data.flatMap((group) => group.permissions); 
+        const permissionIds = result.data.flatMap((group) => group.permissions);
         const memberIds = result.data.flatMap((group) => group.members);
         fetchPermissions(permissionIds);
         fetchMembers(memberIds);
@@ -62,9 +63,9 @@ export default function ManageGroups() {
     }
   };
   const fetchPermissions = (permissionIds) => {
-    console.log("Permission ids:",permissionIds)
+    console.log("Permission ids:", permissionIds);
     const token = localStorage.getItem("authToken");
-    if (permissionIds.length === 0) return; 
+    if (permissionIds.length === 0) return;
 
     axios
       .get("http://localhost:5000/permission/getByIds", {
@@ -72,12 +73,12 @@ export default function ManageGroups() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log(response)
-        console.log("Response: ",response.data)
-        setPermissions(response.data); 
+        console.log(response);
+        console.log("Response: ", response.data);
+        setPermissions(response.data);
       })
       .catch((error) => {
-        console.log("errorrrrr")
+        console.log("errorrrrr");
         console.log(error);
       });
   };
@@ -87,11 +88,15 @@ export default function ManageGroups() {
     if (memberIds.length === 0) return; // If no members to fetch, return early
 
     axios
-      .get("http://localhost:5000/user/getByIds", {
-        params: { memberIds: memberIds.join(",") },
-      },{
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(
+        "http://localhost:5000/user/getByIds",
+        {
+          params: { memberIds: memberIds.join(",") },
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
       .then((response) => {
         setMembers(response.data); // Store member names
       })
@@ -101,11 +106,11 @@ export default function ManageGroups() {
   };
 
   const getPermissionNames = (permissionIds) => {
-    console.log('hi')
+    console.log("hi");
     return permissionIds
       .map((id) => {
         const permission = permissions.find((perm) => perm._id === id);
-        console.log("Permission: ".permission)
+        console.log("Permission: ".permission);
         return permission ? permission.permissionName : "Unknown Permission";
       })
       .join(", ");
@@ -124,6 +129,7 @@ export default function ManageGroups() {
 
   return (
     <>
+    <Header/>
       <div className="grid">
         <div className="row-start-1 col-span-1">
           <AdminSidebar />
@@ -132,36 +138,85 @@ export default function ManageGroups() {
           <button onClick={viewGroups} className="mt-20 mb-20">
             View groups
           </button>
-          <div>
-            {groups.length > 0 ? (
-              <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
-                {groups.map((item) => (
-                  <li key={item._id} className="pb-3 sm:pb-4">
-                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white ">
+
+          <div
+            id="viewGroupBox"
+            className="flow-root rounded-lg border border-gray-100 py-3 shadow-xs"
+          >
+            <dl className="-my-3 divide-y divide-gray-100 text-sm">
+              {groups.length > 0 ? (
+                <ul className="max-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <li className="pb-3 sm:pb-4 grid grid-cols-5 gap-4 p-3 even:bg-gray-50">
+                    <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        <strong>Group Name</strong>
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        <strong>Permissions</strong>
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        <strong>Members</strong>
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white ml-20">
+                        <strong>Edit</strong>
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white ml-20">
+                        <strong>Delete</strong>
+                      </p>
+                    </div>
+                  </li>
+                  
+                  {groups.map((item) => (
+                    <li
+                      key={item._id}
+                      className="pb-3 sm:pb-4 grid grid-cols-5 gap-4 p-3 even:bg-gray-50"
+                    >
+                      <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">
                           {item.groupName}
                         </p>
                       </div>
-                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white ml-30">
+
+                      <div className="flex items-center justify-start text-base font-semibold text-gray-900 dark:text-white">
                         {getPermissionNames(item.permissions)}
                       </div>
-                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white ml-30">
+
+                      <div className="flex items-center justify-start text-base font-semibold text-gray-900 dark:text-white">
                         {getMemberNames(item.members)}
                       </div>
-                      <button onClick={() => updateGroup(item)}>
-                        <ion-icon name="create"></ion-icon>
-                      </button>
-                      <button onClick={() => openDeleteModal(item)}>
-                        <ion-icon name="trash"></ion-icon>
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              ""
-            )}
+
+                      <div className="flex items-center justify-center">
+                        <button
+                          onClick={() => updateGroup(item)}
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          <ion-icon name="create"></ion-icon>
+                        </button>
+                      </div>
+
+                      <div className="flex items-center justify-center">
+                        <button
+                          onClick={() => openDeleteModal(item)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <ion-icon name="trash"></ion-icon>
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                ""
+              )}
+            </dl>
           </div>
         </div>
         <div className="row-start-1 col-span-4">

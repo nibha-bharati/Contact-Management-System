@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import AdminSidebar from "./AdminSidebar";
 import UserSidebar from "./UserSidebar";
+import Header from "./Header";
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -21,20 +22,26 @@ export default function ManageUsers() {
   };
   return (
     <>
+      <Header />
       <div className="grid">
         <div className="row-start-1 col-span-1">
-          {user.role=='admin'?( <AdminSidebar />):(<UserSidebar/>)}
-         
+          {user.role == "admin" ? <AdminSidebar /> : <UserSidebar />}
         </div>
         <div className="row-start-1 col-span-4">
-          <button onClick={viewUsers} className="mt-20 mb-20">
-            View users
+          <button
+            onClick={viewUsers}
+            className="mt-8 mb-8 px-4 py-2 bg-blue-500 text-black rounded-md hover:bg-blue-600 transition duration-200"
+          >
+            View Users
           </button>
-          <div>
+          <div className="flow-root rounded-lg border border-gray-100 py-3 shadow-xs">
             {users.length > 0 ? (
-              <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+              <ul className="max-w-3xl divide-y divide-gray-200 dark:divide-gray-700">
                 {users.map((item) => (
-                  <li key={item._id} className="pb-3 sm:pb-4">
+                  <li
+                    key={item._id}
+                    className="pb-3 sm:pb-4 grid grid-cols-3 gap-4 p-3 even:bg-gray-50"
+                  >
                     <div className="flex items-center space-x-4 rtl:space-x-reverse">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
@@ -44,15 +51,13 @@ export default function ManageUsers() {
                           {item.email}
                         </p>
                       </div>
-                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                        {item.phone}
-                      </div>
                     </div>
+                    
                   </li>
                 ))}
               </ul>
             ) : (
-              ""
+            ''
             )}
           </div>
         </div>

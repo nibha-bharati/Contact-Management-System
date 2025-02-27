@@ -4,18 +4,12 @@ export default function UserSidebar() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const navigate = useNavigate();
-  const logout = () => {
-    localStorage.removeItem("authToken");
-    navigate("/login");
-  };
+ 
 
   return (
     <div className="w-100">
       <div className="flex h-screen flex-col justify-between border-e border-gray-100 bg-white">
         <div className="px-4 py-6">
-          <span className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
-            Logo
-          </span>
 
           <ul className="mt-6 space-y-1">
             <li>
@@ -63,7 +57,7 @@ export default function UserSidebar() {
 
                 <span>{user?.email || "user@example.com"}</span>
               </p>
-              <button onClick={logout} className="ml-30">Logout</button>
+              
             </div>
           </a>
         </div>
