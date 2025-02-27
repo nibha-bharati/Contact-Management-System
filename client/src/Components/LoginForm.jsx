@@ -27,12 +27,19 @@ export default function LoginForm() {
             localStorage.setItem("authToken",token)
             const user = result.data.user;  
             localStorage.setItem("user", JSON.stringify(user));
-            navigate("/home");
+            
+            if(user.role=='admin'){
+              navigate('/adminDashboard')
+            }else{
+              navigate('/home')
+            }
            
           }
           
         })
-        .catch((e) => console.log("Error occured: ", e));
+        .catch((e) => {console.log("Error occured: ", e);
+          alert('Login failed')
+        });
    
   }
 

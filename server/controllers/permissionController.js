@@ -29,7 +29,7 @@ const getPermission = async (req, res) => {
 };
 
 const getPermissionsByIds = async (req, res) => {
- // console.log("hi");
+  // console.log("hi");
   const { permissionIds } = req.query;
   // console.log(req.query);
   // console.log(permissionIds);
@@ -42,15 +42,16 @@ const getPermissionsByIds = async (req, res) => {
     //   console.log(id);
     //   return mongoose.Types.ObjectId(id)
     // });
-const permissions=[]
-   for(let i=0;i<ids.length;i++){
-    permissions.push(await Permission.findById(ids[i]))
-   } 
-   console.log(permissions)
-   // console.log(objectIds);
-   // const permissions = await Permission.find({ _id: { $in: ids } });
+    const permissions = [];
+    for (let i = 0; i < ids.length; i++) {
+      permissions.push(await Permission.findById(ids[i]));
+    }
+    console.log(permissions);
+    // console.log(objectIds);
+    // const permissions = await Permission.find({ _id: { $in: ids } });
     // console.log(hi2);
     // console.log(permissions);
+ 
     res.json(permissions);
   } catch (error) {
     res.status(500).json({ message: error.message });

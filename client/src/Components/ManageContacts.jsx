@@ -5,6 +5,7 @@ import ContactForm from "./ContactForm";
 import UpdateModal from "./UpdateContactModal";
 import DeleteModal from "./DeleteContactModal";
 import { getUserPermissions } from "../Utilities/getPermissionNames";
+import UserSidebar from "./UserSidebar";
 
 export default function ManageContacts() {
   const [contacts, setContacts] = useState([]);
@@ -30,8 +31,8 @@ export default function ManageContacts() {
     const token = localStorage.getItem("authToken");
     e.preventDefault();
     if (
-      permissions.indexOf("getSelfContact")!=-1 ||
-      permissions.indexOf("getOthersContact")!=-1
+      permissions.indexOf("getSelfContact") != -1 ||
+      permissions.indexOf("getOthersContact") != -1
     ) {
       axios
         .get("http://localhost:5000/contact/get", {
@@ -44,8 +45,8 @@ export default function ManageContacts() {
         .catch((error) => {
           console.log(error);
         });
-    }else{
-      alert('You do not have the required permission!')
+    } else {
+      alert("You do not have the required permission!");
     }
   };
 
@@ -62,31 +63,31 @@ export default function ManageContacts() {
   const deleteContact = async () => {
     const token = localStorage.getItem("authToken");
     if (
-      permissions.indexOf("deleteSelfContact")!=-1 ||
-      permissions.indexOf("deleteOthersContact")!=-1
-    ){
+      permissions.indexOf("deleteSelfContact") != -1 ||
+      permissions.indexOf("deleteOthersContact") != -1
+    ) {
       try {
-      const response = await axios.delete(
-        `http://localhost:5000/contact/delete/${selectedContact._id}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setContacts((prevContacts) =>
-        prevContacts.filter((c) => c._id !== selectedContact._id)
-      );
-      setIsDeleteModalOpen(false);
-    } catch (error) {
-      console.error("Error deleting contact:", error);
+        const response = await axios.delete(
+          `http://localhost:5000/contact/delete/${selectedContact._id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setContacts((prevContacts) =>
+          prevContacts.filter((c) => c._id !== selectedContact._id)
+        );
+        setIsDeleteModalOpen(false);
+      } catch (error) {
+        console.error("Error deleting contact:", error);
+      }
+    } else {
+      alert("You do not have the required permission!");
     }
-    }
-    else{alert('You do not have the required permission!')}
-    
   };
 
   return (
     <>
       <div className="grid">
         <div className="row-start-1 col-span-1">
-          <AdminSidebar />
+         {user.role=='admin'?( <AdminSidebar />):(<UserSidebar/>)}
         </div>
         <div className="row-start-1 col-span-2">
           <button onClick={viewContacts} className="mt-20 mb-20">

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 import AdminSidebar from "./AdminSidebar";
+import UserSidebar from "./UserSidebar";
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const viewUsers = (e) => {
     e.preventDefault();
     axios
@@ -20,7 +23,8 @@ export default function ManageUsers() {
     <>
       <div className="grid">
         <div className="row-start-1 col-span-1">
-          <AdminSidebar />
+          {user.role=='admin'?( <AdminSidebar />):(<UserSidebar/>)}
+         
         </div>
         <div className="row-start-1 col-span-4">
           <button onClick={viewUsers} className="mt-20 mb-20">

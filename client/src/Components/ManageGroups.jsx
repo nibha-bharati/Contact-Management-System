@@ -24,7 +24,7 @@ export default function ManageGroups() {
         console.log(result);
         setGroups(result.data);
 
-        const permissionIds = result.data.flatMap((group) => group.permissions); // Extract all permission IDs
+        const permissionIds = result.data.flatMap((group) => group.permissions); 
         const memberIds = result.data.flatMap((group) => group.members);
         fetchPermissions(permissionIds);
         fetchMembers(memberIds);
@@ -62,19 +62,22 @@ export default function ManageGroups() {
     }
   };
   const fetchPermissions = (permissionIds) => {
+    console.log("Permission ids:",permissionIds)
     const token = localStorage.getItem("authToken");
-    if (permissionIds.length === 0) return; // If no permissions to fetch, return early
+    if (permissionIds.length === 0) return; 
 
     axios
       .get("http://localhost:5000/permission/getByIds", {
         params: { permissionIds: permissionIds.join(",") },
-      },{
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setPermissions(response.data); // Store permission names
+        console.log(response)
+        console.log("Response: ",response.data)
+        setPermissions(response.data); 
       })
       .catch((error) => {
+        console.log("errorrrrr")
         console.log(error);
       });
   };
@@ -98,10 +101,11 @@ export default function ManageGroups() {
   };
 
   const getPermissionNames = (permissionIds) => {
+    console.log('hi')
     return permissionIds
       .map((id) => {
         const permission = permissions.find((perm) => perm._id === id);
-        console.log(permission)
+        console.log("Permission: ".permission)
         return permission ? permission.permissionName : "Unknown Permission";
       })
       .join(", ");

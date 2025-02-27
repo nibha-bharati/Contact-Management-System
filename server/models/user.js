@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     require: true,
   },
   role: {
-    type: Number,
+    type: String,
     require: true,
   },
   groups: [
