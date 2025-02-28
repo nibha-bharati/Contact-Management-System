@@ -38,7 +38,13 @@ const getGroup= async (req, res) => {
 const updateGroup= async (req, res) => {
   try {
     const { id } = req.params;
+    
     const group = await Group.findByIdAndUpdate(id, req.body);
+    const memberIds=req.body.members
+    await User.updateMany(
+      {_id:{$in:memberIds}},
+      {$push:{groups: group._id}}
+    )
 
     if (!group) {
       res.status(404).json({ message: "Group not found!" });

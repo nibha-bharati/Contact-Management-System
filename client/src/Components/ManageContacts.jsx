@@ -33,6 +33,7 @@ export default function ManageContacts() {
   const viewContacts = (e) => {
     const token = localStorage.getItem("authToken");
     e.preventDefault();
+    console.log(permissions)
     if (
       permissions.indexOf("getSelfContact") != -1 ||
       permissions.indexOf("getOthersContact") != -1

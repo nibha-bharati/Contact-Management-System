@@ -79,6 +79,7 @@ const UpdateGroupModal = ({
         permissions: selectedPermissions,
         members: selectedUsers,
       };
+      console.log("Updated group data: ", updatedGroupData)
       const response = await axios.put(
         `http://localhost:5000/group/update/${group._id}`,
         updatedGroupData,{
