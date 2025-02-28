@@ -34,7 +34,7 @@ export default function ManageUsers() {
           >
             View Users
           </button>
-          <div className="flow-root rounded-lg border border-gray-100 py-3 shadow-xs">
+          <div className="flow-root rounded-lg border border-white py-3 ">
             {users.length > 0 ? (
               <ul className="max-w-3xl divide-y divide-gray-200 dark:divide-gray-700">
                 {users.map((item) => (

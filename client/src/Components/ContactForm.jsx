@@ -162,9 +162,9 @@ export default function ContactForm() {
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
-                Important dates
+                {/* Important dates
                 <br />
-                Relationships
+                Relationships */}
                 <div>
                   <label className="sr-only" htmlFor="notes">
                     Notes

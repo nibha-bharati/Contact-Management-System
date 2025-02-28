@@ -141,7 +141,7 @@ export default function ManageGroups() {
 
           <div
             id="viewGroupBox"
-            className="flow-root rounded-lg border border-gray-100 py-3 shadow-xs"
+            className="flow-root rounded-lg border border-white py-3"
           >
             <dl className="-my-3 divide-y divide-gray-100 text-sm">
               {groups.length > 0 ? (

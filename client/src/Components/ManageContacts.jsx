@@ -7,12 +7,14 @@ import DeleteModal from "./DeleteContactModal";
 import { getUserPermissions } from "../Utilities/getPermissionNames";
 import UserSidebar from "./UserSidebar";
 import Header from "./Header";
+import ViewContactModal from "./ViewFullContact";
 
 export default function ManageContacts() {
   const [contacts, setContacts] = useState([]);
   const [selectedContact, setSelectedContact] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isViewContactOpen, setIsViewContactOpen] = useState(false);
   const [permissions, setPermissions] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -61,6 +63,11 @@ export default function ManageContacts() {
     setIsDeleteModalOpen(true);
   };
 
+  const viewContactInfo = (contact) => {
+    setSelectedContact(contact);
+    setIsViewContactOpen(true);
+  };
+
   const deleteContact = async () => {
     const token = localStorage.getItem("authToken");
     if (
@@ -97,7 +104,7 @@ export default function ManageContacts() {
           </button>
           <div
             id="viewContactsBox"
-            className="flow-root rounded-lg border border-gray-100 py-3 shadow-xs"
+            className="flow-root rounded-lg border border-white py-3 "
           >
             <dl className="-my-3 divide-y divide-gray-100 text-sm">
               {contacts.length > 0 ? (
@@ -140,13 +147,9 @@ export default function ManageContacts() {
                       className="pb-3 sm:pb-4 grid grid-cols-5 gap-4 p-3 even:bg-gray-50"
                     >
                       <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
-                        <div className="shrink-0">
-                          <img
-                            className="w-12 h-12 rounded-full"
-                            src="/docs/images/people/profile-picture-1.jpg"
-                            alt="Profile"
-                          />
-                        </div>
+                        <button onClick={() => viewContactInfo(item)}>
+                          View
+                        </button>
                       </div>
 
                       <div className="flex items-center justify-start text-base font-semibold text-gray-900 dark:text-white">
@@ -209,7 +212,23 @@ export default function ManageContacts() {
         <DeleteModal
           contact={selectedContact}
           onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={deleteContact} // Delete the contact on confirmation
+          onConfirm={deleteContact} 
+        />
+      )}
+
+      {isViewContactOpen && (
+        <ViewContactModal
+          contact={selectedContact}
+          onClose={() => setIsViewContactOpen(false)}
+          onUpdateSuccess={(updatedContact) => {
+            setContacts((prevContacts) =>
+              prevContacts.map((c) =>
+                c._id === updatedContact._id ? updatedContact : c
+              )
+            );
+            setIsModalOpen(false);
+            I;
+          }}
         />
       )}
     </>
