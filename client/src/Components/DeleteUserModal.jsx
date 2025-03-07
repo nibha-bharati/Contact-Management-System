@@ -1,10 +1,12 @@
 import React from 'react';
 import "./modal.css";  // You can reuse the styles or modify them as needed
 
-const DeleteGroupModal = ({ onClose, onConfirm, group }) => {
+const DeleteUserModal = ({ onClose, onConfirm, userObj }) => {
   return (
     <div className="modal">
-      <h2>Are you sure you want to delete group {group.groupName}?</h2>
+      <h2>Are you sure you want to delete this user?</h2>
+      <p>{userObj.firstname} {userObj.lastname}</p>
+      <p>{userObj.email}</p>
 
       <div className="flex justify-end space-x-4">
         <button
@@ -24,4 +26,4 @@ const DeleteGroupModal = ({ onClose, onConfirm, group }) => {
   );
 };
 
-export default DeleteGroupModal;
+export default DeleteUserModal;

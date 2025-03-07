@@ -34,9 +34,9 @@ const getPermissionsByIds = async (req, res) => {
   // console.log(req.query);
   // console.log(permissionIds);
   const ids = permissionIds.split(",");
-  console.log(ids);
+  // console.log(ids);
   try {
-    console.log("yay");
+    
     // const objectIds = ids.map((id) => mongoose.Types.ObjectId(id));
     // const objectIds = ids.map((id) => {
     //   console.log(id);
@@ -46,7 +46,7 @@ const getPermissionsByIds = async (req, res) => {
     for (let i = 0; i < ids.length; i++) {
       permissions.push(await Permission.findById(ids[i]));
     }
-    console.log(permissions);
+    // console.log(permissions);
     // console.log(objectIds);
     // const permissions = await Permission.find({ _id: { $in: ids } });
     // console.log(hi2);

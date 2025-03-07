@@ -25,7 +25,7 @@ export const getUserPermissions = (userId) => {
       return Promise.all(groupPermissionPromises)
         .then((allPermissionIds) => {
           const allPermissionIdsFlat = [].concat(...allPermissionIds);
-          console.log("all ", allPermissionIdsFlat);
+          //console.log("all ", allPermissionIdsFlat);
           const uniquePermissionIds = [
             ...new Set(allPermissionIdsFlat.filter(Boolean)),
           ];

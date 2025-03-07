@@ -10,7 +10,6 @@ export default function UserSidebar() {
     <div className="w-100">
       <div className="flex h-screen flex-col justify-between border-e border-gray-100 bg-white">
         <div className="px-4 py-6">
-
           <ul className="mt-6 space-y-1">
             <li>
               <Link

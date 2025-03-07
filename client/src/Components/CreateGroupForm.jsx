@@ -36,7 +36,7 @@ export default function createGroup() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((result) => {
-        console.log(result);
+        //console.log(result);
         setPermissions(result.data);
       })
       .catch((error) => {

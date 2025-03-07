@@ -33,17 +33,20 @@ export default function ManageContacts() {
   const viewContacts = (e) => {
     const token = localStorage.getItem("authToken");
     e.preventDefault();
-    console.log(permissions)
+    // console.log(permissions);
     if (
       permissions.indexOf("getSelfContact") != -1 ||
       permissions.indexOf("getOthersContact") != -1
     ) {
       axios
-        .get("http://localhost:5000/contact/get", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get(
+          "http://localhost:5000/contact/get",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
         .then((result) => {
-          console.log(result);
+          // console.log(result);
           setContacts(result.data);
         })
         .catch((error) => {
@@ -92,6 +95,18 @@ export default function ManageContacts() {
     }
   };
 
+  // const getCreatorName = async (creatorId) => {
+  //   const token = localStorage.getItem("authToken");
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:5000/user/get/${creatorId}`,
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     );
+  //     console.log("Response: ",response)
+  //   } catch (error) {
+  //     console.log("Error fetching contact creator name: ", error);
+  //   }
+  // };
   return (
     <>
       <Header />
@@ -127,8 +142,13 @@ export default function ManageContacts() {
                       </p>
                     </div>
                     <div className="flex items-center justify-start text-base font-semibold text-gray-900 dark:text-white">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white ml-5">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
                         <strong>Phone</strong>
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-start text-base font-semibold text-gray-900 dark:text-white">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        <strong>Created by</strong>
                       </p>
                     </div>
                     {/* <div className="flex items-center justify-start text-base font-semibold text-gray-900 dark:text-white">
@@ -145,7 +165,7 @@ export default function ManageContacts() {
                   {contacts.map((item) => (
                     <li
                       key={item._id}
-                      className="pb-3 sm:pb-4 grid grid-cols-5 gap-4 p-3 even:bg-gray-50"
+                      className="pb-3 sm:pb-4 grid grid-cols-6 gap-4 p-3 even:bg-gray-50"
                     >
                       <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
                         <button onClick={() => viewContactInfo(item)}>
@@ -155,7 +175,8 @@ export default function ManageContacts() {
 
                       <div className="flex items-center justify-start text-base font-semibold text-gray-900 dark:text-white">
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
-                          {item.firstname} {item.lastname}
+                          {item.firstname}{" "}
+                          {item.lastname == undefined ? "" : item.lastname}
                         </p>
                       </div>
 
@@ -167,6 +188,11 @@ export default function ManageContacts() {
                         {item.phone}
                       </div>
 
+                      <div className="inline-flex items-center justify-center text-base text-gray-900 dark:text-white">
+                        {/* {console.log(item.creator)} */}
+                        {/* {item.creator.email} */}
+                        {item.creator ? item.creator.email : ""}
+                      </div>
                       <div className="flex items-center justify-center space-x-4">
                         <button
                           onClick={() => updateContact(item)}
@@ -213,7 +239,7 @@ export default function ManageContacts() {
         <DeleteModal
           contact={selectedContact}
           onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={deleteContact} 
+          onConfirm={deleteContact}
         />
       )}
 

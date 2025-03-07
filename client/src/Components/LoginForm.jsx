@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Home  from "./Home";
+import Home from "./Home";
 import axios from "axios";
 
 export default function LoginForm() {
@@ -9,39 +9,41 @@ export default function LoginForm() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const onSubmitHandler=(e)=>{
+  const onSubmitHandler = (e) => {
     e.preventDefault();
-    
-      axios
-        .post("http://localhost:5000/login", {
+
+    axios
+      .post(
+        "http://localhost:5000/login",
+        {
           email,
           password,
-        },{
-          withCredentials: true
-        })
-        .then((result) => {
-          console.log(result);
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((result) => {
+        console.log(result);
 
-          const token=result.data.token;
-          if(token){
-            localStorage.setItem("authToken",token)
-            const user = result.data.user;  
-            localStorage.setItem("user", JSON.stringify(user));
-            
-            if(user.role=='admin'){
-              navigate('/adminDashboard')
-            }else{
-              navigate('/home')
-            }
-           
+        const token = result.data.token;
+        if (token) {
+          localStorage.setItem("authToken", token);
+          const user = result.data.user;
+          localStorage.setItem("user", JSON.stringify(user));
+
+          if (user.role == "admin") {
+            navigate("/adminDashboard");
+          } else {
+            navigate("/home");
           }
-          
-        })
-        .catch((e) => {console.log("Error occured: ", e);
-          alert('Login failed')
-        });
-   
-  }
+        }
+      })
+      .catch((e) => {
+        console.log("Error occured: ", e);
+        alert("Login failed");
+      });
+  };
 
   return (
     <>
@@ -135,7 +137,7 @@ export default function LoginForm() {
             </div>
 
             <button
-            onClick={onSubmitHandler}
+              onClick={onSubmitHandler}
               type="submit"
               className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
             >

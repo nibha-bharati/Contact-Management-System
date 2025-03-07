@@ -16,11 +16,11 @@ export default function ContactForm() {
   const [address, setAddress] = useState();
   const [notes, setNotes] = useState();
   const [website, setWebsite] = useState();
-
   const [permissions, setPermissions] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user._id;
+  const creator=userId
 
   useEffect(() => {
     getUserPermissions(userId)
@@ -35,6 +35,7 @@ export default function ContactForm() {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
+  //  console.log('Creator: ',creator)
     if (permissions.indexOf("createContact") != -1) {
       axios
         .post(
@@ -49,6 +50,7 @@ export default function ContactForm() {
             address,
             notes,
             website,
+            creator
           },
           {
             headers: { Authorization: `Bearer ${token}` },

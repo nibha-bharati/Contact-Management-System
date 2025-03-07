@@ -6,26 +6,46 @@ import { getUserPermissions } from "../Utilities/getPermissionNames";
 const UpdateModal = ({ contact, onClose, onUpdateSuccess }) => {
   const [updatedContact, setUpdatedContact] = useState({
     firstname: "",
-    lastname:"",
+    lastname: "",
     email: "",
+    nickname: "",
+    phone: "",
+    workinfo: "",
+    address: "",
+    notes: "",
+    website: "",
   });
   const [permissions, setPermissions] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user._id;
 
-  useEffect(() => {
-    if (contact) {
-      setUpdatedContact({ firstname: contact.firstname, lastname: contact.lastname, email: contact.email });
-    }
-    getUserPermissions(userId)
-    .then((permissionNames) => {
-      setPermissions(permissionNames);
-    })
-    .catch((error) => {
-      console.error("Error fetching permissions:", error);
-    });
-  }, [contact],[userId]);
+  useEffect(
+    () => {
+      if (contact) {
+        setUpdatedContact({
+          firstname: contact.firstname,
+          lastname: contact.lastname,
+          email: contact.email,
+          nickname: contact.nickname,
+          phone: contact.phone,
+          workinfo: contact.workinfo,
+          address: contact.address,
+          notes: contact.notes,
+          website: contact.website,
+        });
+      }
+      getUserPermissions(userId)
+        .then((permissionNames) => {
+          setPermissions(permissionNames);
+        })
+        .catch((error) => {
+          console.error("Error fetching permissions:", error);
+        });
+    },
+    [contact],
+    [userId]
+  );
 
   const handleChange = (e) => {
     setUpdatedContact((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -34,7 +54,7 @@ const UpdateModal = ({ contact, onClose, onUpdateSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
-    console.log(permissions)
+    console.log(permissions);
     if (
       permissions.indexOf("updateSelfContact") != -1 ||
       permissions.indexOf("updateOthersContact") != -1
@@ -64,13 +84,35 @@ const UpdateModal = ({ contact, onClose, onUpdateSuccess }) => {
 
       <form onSubmit={handleSubmit}>
         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Name:
+          First name:
         </label>
 
         <input
           type="text"
           name="firstname"
-          value={updatedContact.firstname+" "+updatedContact.lastname}
+          value={updatedContact.firstname}
+          onChange={handleChange}
+        />
+
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Last name:
+        </label>
+
+        <input
+          type="text"
+          name="lastname"
+          value={updatedContact.lastname}
+          onChange={handleChange}
+        />
+
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Phone number:
+        </label>
+
+        <input
+          type="text"
+          name="phone"
+          value={updatedContact.phone}
           onChange={handleChange}
         />
 
@@ -84,7 +126,46 @@ const UpdateModal = ({ contact, onClose, onUpdateSuccess }) => {
           value={updatedContact.email}
           onChange={handleChange}
         />
-        <br/>
+
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Work Info:
+        </label>
+
+        <input
+          type="text"
+          name="workinfo"
+          value={updatedContact.workinfo}
+          onChange={handleChange}
+        />
+
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Address:
+        </label>
+
+        <input
+          type="text"
+          name="address"
+          value={updatedContact.address}
+          onChange={handleChange}
+        />
+
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Notes:
+        </label>
+
+        <input
+          type="text"
+          name="notes"
+          value={updatedContact.notes}
+          onChange={handleChange}
+        />
+
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Website:
+        </label>
+
+        <input type="text" name="website" value={updatedContact.website} />
+        <br />
         <button
           className="text-black inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           type="submit"

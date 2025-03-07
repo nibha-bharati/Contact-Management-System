@@ -38,14 +38,9 @@ const contactSchema = new mongoose.Schema({
   website: {
     type: String,
   },
-  owner: {
+  creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-  },
-  team: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Group",
-    default: null
   },
 });
 
